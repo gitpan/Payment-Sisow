@@ -25,4 +25,4 @@ requires:
   Test::More: 0.8
   XML::Compile::SOAP11: 2.37
   XML::Compile::SOAP12: 2.04
-version: 0.10
+version: 0.11

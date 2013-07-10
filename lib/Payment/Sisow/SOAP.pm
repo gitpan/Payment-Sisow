@@ -8,7 +8,7 @@ use utf8;
 
 package Payment::Sisow::SOAP;
 use vars '$VERSION';
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 use base 'Payment::Sisow';
 
@@ -105,24 +105,12 @@ sub _transaction_info(%)
 sub _start_transaction(%)
 {   my ($self, %args) = @_;
 
-#use Data::Dumper;
-#warn "_START ", Dumper \%args;
     my ($answer, $trace) = $self->wsdl->call(GetURL => %args);
     unless($answer)
     {   $trace->printErrors;
         error $trace->{error};
     }
 
-#=for trace
-
-local *TRACE;
-if(open TRACE, '>', "/tmp/sisow.$$")
-{   use Data::Dumper; $Data::Dumper::Indent =1; $Data::Dumper::Quotekeys=1;
-    print TRACE Dumper $answer, $trace;
-    close TRACE;
-}
-
-#=cut
 
     # $answer = {parameters => {GetURLResult => 0, issuerurl =>, trxid => }};
     my $p  = $answer->{parameters};

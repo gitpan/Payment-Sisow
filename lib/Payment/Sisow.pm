@@ -8,7 +8,7 @@ use utf8;
 
 package Payment::Sisow;
 use vars '$VERSION';
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 
 use Log::Report 'sisow';
@@ -120,9 +120,9 @@ warn Dumper \%args;
     $entrance    = ''
         if $entrance eq $purchase_id;
 
-    my $provider = $args{provider} || 'ideal';
-    error __x"provider iDEAL requires bank id"
-        if $provider eq 'ideal' && !$bank_id;
+    my $payment = $args{payment} || 'ideal';
+    error __x"payment via iDEAL requires bank id"
+        if $payment eq 'ideal' && !$bank_id;
 
     my $return   = $args{return_url} or panic;
     my $cancel   = $args{cancel_url};
@@ -134,7 +134,7 @@ warn Dumper \%args;
     my $p        = $self->_start_transaction
       ( merchantid  => $self->merchantId
       , merchantkey => $self->merchantKey
-      , payment     => ($provider eq 'ideal' ? '' : $provider)
+      , payment     => ($payment eq 'ideal' ? '' : $payment)
       , issuerid    => $bank_id
       , amount      => $amount_cent
       , purchaseid  => $purchase_id
@@ -154,6 +154,7 @@ warn Dumper \%args;
     ($tid, $bank_page);
 }
 
+#----------------
 
 sub securedPayment($)
 {   my ($self, $qs) = @_;
@@ -174,5 +175,8 @@ sub securedPayment($)
 
 sub isValidPurchaseId($)  { $_[1] =~ /^[$valid_purchase_chars]{1,16}$/o }
 sub isValidDescription($) { $_[1] =~ /^[$valid_descr_chars]{0,32}$/o    }
+
+
+#--------------
 
 1;
