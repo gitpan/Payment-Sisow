@@ -44,7 +44,7 @@ and (if available) a donation.
 =item Payment::Sisow-E<gt>B<new>(OPTIONS)
 
 Inside Sisow's customer website, you can find the generated merchant
-<b>id</b> (semi-secret registration number) and <b>key (secret which
+B<id> (semi-secret registration number) and B<key> (secret which
 is used to sign the replies).
 
  -Option      --Default
@@ -56,13 +56,16 @@ is used to sign the replies).
 
 =item merchant_id => STRING
 
+The Sisow customer's unique key.
+
 =item merchant_key => STRING
+
+The "merchants" password.
 
 =item test => BOOLEAN
 
 You have to enable the permission to run tests in the customer website
-of Sisow to be able to run tests.  If not enabled, you will get "317"
-errors.
+of Sisow.  If not enabled, you will get "317" errors.
 
 =back
 
@@ -103,7 +106,7 @@ redirected to.
 
  -Option      --Default
   amount        <required>
-  bank_id       <required>
+  bank_id       <undef>
   callback_url  <return_url>
   cancel_url    <return_url>
   description   undef
@@ -117,6 +120,8 @@ redirected to.
 =item amount => FLOAT_EURO
 
 =item bank_id => ISSUERID
+
+Required when C<payment> is C<ideal>
 
 =item callback_url => URL
 
@@ -143,6 +148,11 @@ Pick from:
 
 =back
 
+example: 
+
+  my ($trxid, $redirect) = try { $sisow->startTransation(%args) };
+  die $@->wasFatal if $@;
+
 =item $obj-E<gt>B<transactionInfo>(TRANSACTION_ID)
 
 Returns a HASH with complex information.
@@ -154,7 +164,8 @@ example:
 
 =item $obj-E<gt>B<transactionStatus>(TRANSACTION_ID)
 
-Returns C<undef>, "Success", "Expired", "Cancelled", or "Failure".
+Returns C<undef>, "Open", "Success", "Expired", "Cancelled", "Failure",
+"Pending", "Credited", or "Reversed".
 
 example: 
 
@@ -171,10 +182,10 @@ example:
 
 =item $obj-E<gt>B<isValidPurchaseId>(STRING)
 
-=item $obj-E<gt>B<securedPayment>(QS)
+=item $obj-E<gt>B<securedPayment>(QS|PAIRS)
 
 Check whether the payment response was created by Sisow.  QS is a HASH with
-the URI parameters.
+the URI parameters, or the same parameters as LIST of PAIRS
 
 =back
 
@@ -218,12 +229,12 @@ Sisow also offers payment services:
 
 =head1 SEE ALSO
 
-This module is part of Payment-Sisow distribution version 0.11,
-built on July 10, 2013. Website: F<http://perl.overmeer.net/>
+This module is part of Payment-Sisow distribution version 0.12,
+built on January 06, 2014. Website: F<http://perl.overmeer.net/>
 
 =head1 LICENSE
 
-Copyrights 2013 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2013-2014 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

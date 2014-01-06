@@ -128,7 +128,7 @@ See L<Payment::Sisow/"Helpers">
 
 See L<Payment::Sisow/"Helpers">
 
-=item $obj-E<gt>B<securedPayment>(QS)
+=item $obj-E<gt>B<securedPayment>(QS|PAIRS)
 
 See L<Payment::Sisow/"Helpers">
 
@@ -150,12 +150,12 @@ Undocumented error codes:   (spec version 1.0)
 
 =head1 SEE ALSO
 
-This module is part of Payment-Sisow distribution version 0.11,
-built on July 10, 2013. Website: F<http://perl.overmeer.net/>
+This module is part of Payment-Sisow distribution version 0.12,
+built on January 06, 2014. Website: F<http://perl.overmeer.net/>
 
 =head1 LICENSE
 
-Copyrights 2013 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2013-2014 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -35,13 +35,13 @@
             "Digest::SHA1" : "0",
             "File::Basename" : "0",
             "File::Spec" : "0",
-            "Log::Report" : "0.99",
+            "Log::Report" : "1.00",
             "Test::More" : "0.8",
-            "XML::Compile::SOAP11" : "2.37",
-            "XML::Compile::SOAP12" : "2.04"
+            "XML::Compile::SOAP11" : "3.00",
+            "XML::Compile::WSDL11" : "3.00"
          }
       }
    },
    "release_status" : "stable",
-   "version" : "0.11"
+   "version" : "0.12"
 }

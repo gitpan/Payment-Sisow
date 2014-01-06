@@ -1,4 +1,4 @@
-# Copyrights 2013 by [Mark Overmeer].
+# Copyrights 2013-2014 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.01.
@@ -8,7 +8,7 @@ use utf8;
 
 package Payment::Sisow;
 use vars '$VERSION';
-$VERSION = '0.11';
+$VERSION = '0.12';
 
 
 use Log::Report 'sisow';
@@ -24,7 +24,11 @@ my $purchase_become_star = q{"':;?()$};    # accepted but replaced by Sisow
 my $valid_entrance_chars = q{A-Za-z0-9};
 
 
-sub new(%) { my $class = shift; (bless {}, $class)->init( {@_} ) }
+sub new(%)
+{   my $class = shift;
+    $class ne __PACKAGE__ or panic "instantiate an extension of ".__PACKAGE__;
+    (bless {}, $class)->init( {@_} );
+}
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -80,8 +84,6 @@ sub transactionInfo($)
 
 sub startTransaction(%)
 {   my ($self, %args) = @_;
-use Data::Dumper;
-warn Dumper \%args;
     my $bank_id     = $args{bank_id};
     my $amount_euro = $args{amount}  // panic;
     my $amount_cent = int($amount_euro*100 + 0.5); # float euro -> int cents
@@ -156,11 +158,12 @@ warn Dumper \%args;
 
 #----------------
 
-sub securedPayment($)
-{   my ($self, $qs) = @_;
-    my $ec       = $qs->{ec};
-    my $trxid    = $qs->{trxid};
-    my $status   = $qs->{status};
+sub securedPayment(@)
+{   my $self   = shift;
+    my $qs     = @_ > 1 ? {@_} : shift;
+    my $ec     = $qs->{ec};
+    my $trxid  = $qs->{trxid};
+    my $status = $qs->{status};
     # docs say separated by '/', but isn't in practice
     my $checksum = sha1_hex
         (join '', $trxid, $ec, $status, $self->merchantId, $self->merchantKey);
