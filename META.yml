@@ -24,5 +24,6 @@ requires:
   Log::Report: 1.00
   Test::More: 0.8
   XML::Compile::SOAP11: 3.00
+  XML::Compile::SOAP12: 3.00
   XML::Compile::WSDL11: 3.00
-version: 0.12
+version: 0.13
